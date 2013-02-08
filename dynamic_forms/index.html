@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Dynamiczne formularze</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+        <script type="text/javascript" src="http://jquery.bassistance.de/validate/jquery.validate.js"></script>
+        <link rel="stylesheet" type="text/css" media="screen" href="http://jquery.bassistance.de/validate/demo/css/screen.css" />
+    </head>
+    <body>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                // tworzymy zmienną i, wykorzystamy ją do identyfikowania wierszy
+                // ustawiamy jej wartość 2, ponieważ jeden wiersz jest już w tabeli
+                var i = 2;
+                // tworzymy zmienną szablonWiersza i wczytujemy do niej szablon z textarea #szablon
+                var szablonWiersza = jQuery.format($("#szablon").val());
+                // tworzymy funkcję, która dodaje szablon do właściwej tabeli
+                function dodajWiersz() {
+                    var ii = i++;
+                    // dodajemy wiersz do właściwej tabeli
+                    $(szablonWiersza(ii)).appendTo("#listaOsob tbody");
+                    // Nowy wiersz jest już widoczny.
+                    // Każdy element nowego wiersza posiada swoje id
+                    // tr na id: wiersz_2, ikona minus ma id: usunOsobe_2
+                    // Do nowo dodanej ikony - dodajmy zdarzenie.
+                    // W momencie kliknięcia minusa, wiersz zostanie usunięty.
+                    $("#usunOsobe_" + ii).click(function(){
+                        $("#wiersz_" + ii).remove();
+                    });
+                }
+                // do przycisku #dodajOsobe dodajemy zdarzenie,
+                // kliknięcie na przycisk plus wywoła fukcję dodajWiersz
+                $("#dodajOsobe").click(dodajWiersz);
+            });
+        </script>
+
+        <!-- Szablon wiersza w tabeli -->
+
+        <textarea id="szablon" style="display:none;" cols="1" rows="1">
+            <tr id="wiersz_{0}">
+                <td>{0}.</td>
+                <td><input type="text" name="imie[]"></td>
+                <td><input type="text" name="nazwisko[]"></td>
+                <td><img src="http://antczak.org/source/dynamic_forms/12.png" id="usunOsobe_{0}" alt="usun"></td>
+            </tr>
+        </textarea>
+
+        <!-- Właściwa tabela -->
+
+        <form action="parser.php" method="post">
+            <table id="listaOsob">
+                <thead>
+                    <tr>
+                        <th>Lp</th>
+                        <th>Imię</th>
+                        <th>Nazwisko</th>
+                        <th>+/-</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th colspan="4">
+                            <input type="submit" name="wyslij" value="Wyślij">
+                        </th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr>
+                        <td>1.</td>
+                        <td><input type="text" name="imie[]"></td>
+                        <td><input type="text" name="nazwisko[]"></td>
+                        <td><img src="http://antczak.org/source/dynamic_forms/11.png" id="dodajOsobe" alt="dodaj"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </body>
+</html>
