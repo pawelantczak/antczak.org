@@ -19,7 +19,7 @@
                 function dodajWiersz() {
                     var ii = i++;
                     // dodajemy wiersz do właściwej tabeli
-                    $(szablonWiersza(ii)).appendTo("#listaOsob tbody");
+                    $("#listaOsob tbody").append(szablonWiersza(ii));
                     // Nowy wiersz jest już widoczny.
                     // Każdy element nowego wiersza posiada swoje id
                     // tr na id: wiersz_2, ikona minus ma id: usunOsobe_2
